@@ -1,0 +1,12 @@
+{
+  "core.fixtures.languageCodes.ar" : "العربية",
+  "core.fixtures.languageCodes.en" : "English",
+  "core.fixtures.ThemeCodes.light" : "نمط نهاري",
+  "core.fixtures.ThemeCodes.dark" : "نمط مظلم",
+  "core.network.NoInternetConnection" : "لا يوجد اتصال بالانترنت",
+
+  "presentation.actions.appLanguage" : "لغة التطبيق:",
+  "presentation.actions.appTheme" : "النمط:",
+  "presentation.actions.settingsHeader" : "الإعدادات",
+  "presentation.actions.faqsHeader" : "الأسئلة الشائعة"
+}

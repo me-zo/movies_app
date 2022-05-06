@@ -1,0 +1,85 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "5:2646814929894395178",
+      "lastPropertyId": "7:8788685707237116801",
+      "name": "InvoiceEntity",
+      "properties": [
+        {
+          "id": "1:5134613136645265221",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3165215311326436843",
+          "name": "sellerName",
+          "type": 9
+        },
+        {
+          "id": "3:2238768315823759795",
+          "name": "sellerTaxNumber",
+          "type": 9
+        },
+        {
+          "id": "4:2231507432802767989",
+          "name": "invoiceDate",
+          "type": 9
+        },
+        {
+          "id": "5:8660756066294905478",
+          "name": "invoiceTotal",
+          "type": 9
+        },
+        {
+          "id": "6:2620587362835806266",
+          "name": "taxTotal",
+          "type": 9
+        },
+        {
+          "id": "7:8788685707237116801",
+          "name": "scannedDate",
+          "type": 10
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "5:2646814929894395178",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    1686007958408075758,
+    5593777503126438959,
+    3225870650005892902,
+    5775700175303744119
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    4984450478450664888,
+    8600792188938400062,
+    1284697358240427423,
+    5208607873051352289,
+    6508156047857760138,
+    5557872305386618140,
+    2789725487327336529,
+    331575883384146589,
+    7763889445190746014,
+    6459705549620760073,
+    418906984777467936,
+    359902004045315176,
+    8729807736525427156,
+    2685331226085625423,
+    1821576645413239433,
+    6474430153452375021,
+    7885386062667129486
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

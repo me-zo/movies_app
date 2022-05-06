@@ -1,0 +1,12 @@
+{
+  "core.fixtures.languageCodes.ar" : "العربية",
+  "core.fixtures.languageCodes.en" : "English",
+  "core.fixtures.ThemeCodes.light" : "Light Theme",
+  "core.fixtures.ThemeCodes.dark" : "Dark Theme",
+  "core.network.NoInternetConnection" : "No Internet Connection",
+  "core.failures.unknownError" : "Unknown Error",
+
+  "presentation.actions.appLanguage" : "Application Language:",
+  "presentation.actions.appTheme" : "Themes:",
+  "presentation.actions.settingsHeader" : "Settings"
+}
