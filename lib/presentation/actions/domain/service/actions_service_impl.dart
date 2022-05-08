@@ -16,7 +16,6 @@ class ActionsServiceImpl implements ActionsService {
         () => Right(SettingsModel(
             local: _settingsNotifier.getLocale.languageCode,
             theme: _settingsNotifier.getThemeName)),
-        "Error Loading Settings",
       );
 
   @override
@@ -26,7 +25,6 @@ class ActionsServiceImpl implements ActionsService {
           _settingsNotifier.setLocale(language);
           return const Right(null);
         },
-        "Error Changing App Language",
       );
 
   @override
@@ -36,7 +34,6 @@ class ActionsServiceImpl implements ActionsService {
           _settingsNotifier.setTheme(theme);
           return const Right(null);
         },
-        "Error Changing App Theme",
       );
 
   @override
@@ -52,6 +49,5 @@ class ActionsServiceImpl implements ActionsService {
                 answer: "presentation.actions.faqsQuestion2Body"),
           ]));
         },
-        "Error Changing App Theme",
       );
 }

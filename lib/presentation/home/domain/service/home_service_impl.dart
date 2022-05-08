@@ -16,11 +16,14 @@ class HomeServiceImpl implements HomeService {
           return Right(
             movies
                 .map(
-                  (e) => MovieModel(movieTitle: e.title, moviePoster: e.poster),
+                  (e) => MovieModel(
+                    movieTitle: e.title,
+                    moviePoster: e.poster,
+                    year: e.year,
+                  ),
                 )
                 .toList(),
           );
         },
-        "presentation.home.invalidScanError1",
       );
 }

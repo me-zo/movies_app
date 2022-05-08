@@ -3,10 +3,14 @@
   "core.fixtures.languageCodes.en" : "English",
   "core.fixtures.ThemeCodes.light" : "نمط نهاري",
   "core.fixtures.ThemeCodes.dark" : "نمط مظلم",
+  "core.fixtures.unknownError" : "لقد حدث خطأ ما",
   "core.network.NoInternetConnection" : "لا يوجد اتصال بالانترنت",
 
   "presentation.actions.appLanguage" : "لغة التطبيق:",
   "presentation.actions.appTheme" : "النمط:",
   "presentation.actions.settingsHeader" : "الإعدادات",
-  "presentation.actions.faqsHeader" : "الأسئلة الشائعة"
+  "presentation.actions.faqsHeader" : "الأسئلة الشائعة",
+
+  "presentation.home.moviesHeader" : "الافلام",
+  "presentation.home.moviesSearch" : "ابحث عن فلم"
 }

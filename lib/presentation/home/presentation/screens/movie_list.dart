@@ -29,6 +29,7 @@ class MovieList extends StatelessWidget {
                 height: 100,
               ),
               title: Text(movie.movieTitle),
+              subtitle:Text(movie.year),
             );
           },
         );

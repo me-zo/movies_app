@@ -38,8 +38,6 @@ dependencies:
   responsive_framework: ^0.1.5
   http:
   connectivity_plus:
-  qr_code_scanner:
-  google_fonts: ^2.3.2
 
 
 dev_dependencies:

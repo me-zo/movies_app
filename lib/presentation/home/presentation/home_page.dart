@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/app/localization/resources.dart';
 
 import '../../actions/presentation/actions_page.dart';
 import '../../home/presentation/manager/home_cubit.dart';
@@ -16,18 +17,24 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _controller = TextEditingController();
 
   @override
+  void initState() {
+    BlocProvider.of<HomeCubit>(context).searchMovies(value: "batman");
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Movies"),
+        title: Text(Resources.of(context).getResource("presentation.home.moviesHeader")),
         actions: [
           IconButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ActionsPage(action: ActionName.settings),
+                builder: (context) => const ActionsPage(action: ActionName.settings),
               ),
             ),
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
           )
         ],
       ),
@@ -50,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
                 decoration: InputDecoration(
-                  hintText: "Search",
+                  hintText: Resources.of(context).getResource("presentation.home.moviesSearch"),
                   border: InputBorder.none,
                 ),
               ),

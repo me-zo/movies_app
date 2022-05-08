@@ -15,7 +15,7 @@ class HttpClient {
     required String body,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/$url");
+      var finalUrl = Uri.parse("${getBaseUrl()}/$url?&apikey=${Secrets.apiKey}");
 
       log("Posting To: $finalUrl");
       var result = await post(
@@ -34,7 +34,7 @@ class HttpClient {
     required String body,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/$url");
+      var finalUrl = Uri.parse("${getBaseUrl()}/$url?&apikey=${Secrets.apiKey}");
 
       log("Putting To: $finalUrl");
 
@@ -53,7 +53,7 @@ class HttpClient {
     required String url,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/$url");
+      var finalUrl = Uri.parse("${getBaseUrl()}/$url?&apikey=${Secrets.apiKey}");
 
       log("Getting From: $finalUrl");
       var result = await get(
@@ -73,9 +73,9 @@ class HttpClient {
 
   static Map<String, String> _getHeaders() {
     var headers = {'Content-Type': 'application/json-patch+json'};
-    headers.addAll({
-    "apikey" : Secrets.apiKey
-    });
+    // headers.addAll({
+    // "apikey" : Secrets.apiKey
+    // });
     return headers;
   }
 

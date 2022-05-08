@@ -4,22 +4,23 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
+import 'package:movies_app/core/fixtures/app_keys.dart';
 
 import 'errors.dart';
 
 class ErrorHandler {
   static Future<Either<Failure, T>> handleFuture<T>(
     Future<Either<Failure, T>> Function() func,
-    String errorMessage,
-  ) async {
+      ) async {
     try {
       return await func.call();
     } on Exception catch (e) {
       return Left(_mapExceptionToFailure(e));
     } catch (e) {
+      log(e.toString());
       return Left(
         Failure(
-          message: errorMessage,
+          message: AppKeys.error,
         ),
       );
     }
@@ -27,7 +28,6 @@ class ErrorHandler {
 
   static Either<Failure, T> handle<T>(
     Either<Failure, T> Function() func,
-    String errorMessage,
   ) {
     try {
       return func.call();
@@ -36,7 +36,7 @@ class ErrorHandler {
     } catch (e) {
       return Left(
         Failure(
-          message: errorMessage,
+          message: AppKeys.error,
         ),
       );
     }
@@ -70,6 +70,7 @@ class ErrorHandler {
     }
   }
 
+  /// maps possible exceptions to be shown in the form of a failure message
   static Failure _mapExceptionToFailure(Exception exception) {
     log(exception.toString());
     switch (exception.runtimeType) {
@@ -98,10 +99,15 @@ class ErrorHandler {
         return Failure(
           message: exception.body,
         );
+      case FormatException:
+        exception as FormatException;
+        return Failure(
+          message: exception.message,
+        );
 
       default:
         return Failure(
-          message: "core.failures.unknownError",
+          message: AppKeys.error,
         );
     }
   }

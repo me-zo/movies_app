@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 
@@ -20,6 +21,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
     if (result.statusCode != HttpStatus.ok) {
       throw ErrorHandler.httpResponseException(result);
     } else {
+      log(result.body);
       var decodedObject = json.decode(result.body);
       return MovieListDto.fromJson(decodedObject).movies;
     }

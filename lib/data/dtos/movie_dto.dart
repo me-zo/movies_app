@@ -12,8 +12,9 @@ class MovieListDto {
 
   String toRawJson() => json.encode(toJson());
 
-  factory MovieListDto.fromJson(List<dynamic> json) => MovieListDto(
-        movies: List<MovieDto>.from(json.map((x) => MovieDto.fromJson(x))),
+  factory MovieListDto.fromJson(Map<String, dynamic> json) => MovieListDto(
+        movies: List<MovieDto>.from(
+            json["Search"].map((x) => MovieDto.fromJson(x))),
       );
 
   List<dynamic> toJson() => movies;
@@ -22,10 +23,15 @@ class MovieListDto {
 class MovieDto {
   final String title;
   final String poster;
+  final String year;
 
-  MovieDto({required this.title, required this.poster});
+  MovieDto({required this.title, required this.poster, required this.year});
 
   factory MovieDto.fromJson(Map<String, dynamic> json) {
-    return MovieDto(title: json["Title"], poster: json["Poster"]);
+    return MovieDto(
+      title: json["Title"] ?? "",
+      poster: json["Poster"] ?? "",
+      year: json["Year"] ?? "",
+    );
   }
 }
