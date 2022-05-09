@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/app/localization/resources.dart';
+import 'package:movies_app/presentation/home/presentation/screens/movie_details.dart';
 
 import '../../actions/presentation/actions_page.dart';
 import '../../home/presentation/manager/home_cubit.dart';
@@ -26,45 +27,69 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(Resources.of(context).getResource("presentation.home.moviesHeader")),
+        title: Text(Resources.of(context)
+            .getResource("presentation.home.moviesHeader")),
         actions: [
           IconButton(
             onPressed: () => Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const ActionsPage(action: ActionName.settings),
+                builder: (context) =>
+                    const ActionsPage(action: ActionName.settings),
               ),
             ),
             icon: const Icon(Icons.settings),
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.onBackground,
-                  borderRadius: BorderRadius.circular(10)),
-              child: TextField(
-                controller: _controller,
-                onSubmitted: (value) {
-                  if (value.isNotEmpty) {
-                    BlocProvider.of<HomeCubit>(context)
-                        .searchMovies(value: value);
-                    _controller.clear();
-                  }
-                },
-                decoration: InputDecoration(
-                  hintText: Resources.of(context).getResource("presentation.home.moviesSearch"),
-                  border: InputBorder.none,
+      body: BlocConsumer<HomeCubit, HomeState>(
+        listener: (context, state) {
+          if (state is ShowMovieDetails) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => MovieDetails(
+                  movie: state.movie,
                 ),
               ),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state is Loading) {
+            return Center(
+                child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.onBackground,
+            ));
+          }
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onBackground,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: TextField(
+                    controller: _controller,
+                    onSubmitted: (value) {
+                      if (value.isNotEmpty) {
+                        BlocProvider.of<HomeCubit>(context)
+                            .searchMovies(value: value);
+                        _controller.clear();
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: Resources.of(context)
+                          .getResource("presentation.home.moviesSearch"),
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+                const Expanded(child: MovieList())
+              ],
             ),
-            const Expanded(child: MovieList())
-          ],
-        ),
+          );
+        },
       ),
     );
   }

@@ -46,7 +46,7 @@ class ErrorHandler {
   /// Then handles the rest based on the HTTP Code level
   static Exception httpResponseException(Response response) {
     final Map<String, dynamic> json = jsonDecode(response.body);
-
+    log(json.toString());
     switch (response.statusCode) {
       case HttpStatus.forbidden:
         return UnauthorizedException(message: json['message'] ?? "");

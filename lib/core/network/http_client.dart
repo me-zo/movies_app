@@ -15,7 +15,7 @@ class HttpClient {
     required String body,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/$url?&apikey=${Secrets.apiKey}");
+      var finalUrl = Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
 
       log("Posting To: $finalUrl");
       var result = await post(
@@ -34,7 +34,7 @@ class HttpClient {
     required String body,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/$url?&apikey=${Secrets.apiKey}");
+      var finalUrl = Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
 
       log("Putting To: $finalUrl");
 
@@ -53,7 +53,7 @@ class HttpClient {
     required String url,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/$url?&apikey=${Secrets.apiKey}");
+      var finalUrl = Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
 
       log("Getting From: $finalUrl");
       var result = await get(

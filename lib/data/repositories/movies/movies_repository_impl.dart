@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:movies_app/data/dtos/movie_details_dto.dart';
 
 import '../../../core/exports.dart';
 import '../../../core/network/http_client.dart';
@@ -16,14 +16,29 @@ class MoviesRepositoryImpl implements MoviesRepository {
 
   @override
   Future<List<MovieDto>> searchMovies({required String keyword}) async {
-    var path = "?s=$keyword";
+    var path = "&s=$keyword";
     var result = await _client.getData(url: path);
     if (result.statusCode != HttpStatus.ok) {
       throw ErrorHandler.httpResponseException(result);
     } else {
       log(result.body);
-      var decodedObject = json.decode(result.body);
-      return MovieListDto.fromJson(decodedObject).movies;
+      if (MovieListDto.fromRawJson(result.body).response != "True") {
+        throw NotFoundException(
+            message: MovieListDto.fromRawJson(result.body).error);
+      }
+      return MovieListDto.fromRawJson(result.body).movies;
+    }
+  }
+
+  @override
+  Future<MovieDetailsDto> getMovieDetails({required String id}) async {
+    var path = "&i=$id";
+    var result = await _client.getData(url: path);
+    if (result.statusCode != HttpStatus.ok) {
+      throw ErrorHandler.httpResponseException(result);
+    } else {
+      log(result.body);
+      return MovieDetailsDto.fromRawJson(result.body);
     }
   }
 }

@@ -57,7 +57,7 @@ class Themes {
 
   static const ColorScheme lightColorScheme = ColorScheme(
     primary: Color(0xFF00336E),
-    secondary: Color(0xFF1499FF),
+    secondary: Color(0xFF1481D3),
     tertiary: Colors.white,
     background: Color(0xFFFFFFFF),
     onBackground: Color(0xFFC7C7C7),

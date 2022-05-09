@@ -18,4 +18,9 @@ class ShowMovieList extends HomeState {
 
   ShowMovieList({required this.info});
 }
+class ShowMovieDetails extends HomeState {
+  final MovieDetailsModel movie;
+
+  ShowMovieDetails({required this.movie});
+}
 
