@@ -1,15 +1,14 @@
-import '../app/localization/resources.dart';
-import '../../data/shared_preferences/settings_notifier.dart';
-import '../../presentation/actions/presentation/manager/actions_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:movies_app/presentation/home/presentation/manager/home_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../core/dependency_registrar/dependencies.dart';
+import '../../data/shared_preferences/settings_notifier.dart';
+import '../../presentation/actions/presentation/manager/actions_cubit.dart';
+import '../app/localization/resources.dart';
 import '../core/exports.dart';
-import '../presentation/home/presentation/manager/home_cubit.dart';
 import '../presentation/home/presentation/screens/splash.dart';
 import '../presentation/route_generator.dart';
 
@@ -32,8 +31,8 @@ class _MyAppState extends State<MyApp> {
         builder: (context, settings, child) {
           return MultiBlocProvider(
             providers: [
-              BlocProvider<HomeCubit>(
-                create: (context) => sl<HomeCubit>(),
+              BlocProvider<HomeBloc>(
+                create: (context) => sl<HomeBloc>(),
               ),
               BlocProvider<ActionsCubit>(
                 create: (context) => sl<ActionsCubit>(),

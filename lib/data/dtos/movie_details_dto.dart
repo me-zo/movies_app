@@ -55,65 +55,96 @@ class MovieDetailsDto {
   final String website;
   final String response;
 
-  factory MovieDetailsDto.fromRawJson(String str) => MovieDetailsDto.fromJson(json.decode(str));
+  factory MovieDetailsDto.fromRawJson(String str) =>
+      MovieDetailsDto.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory MovieDetailsDto.fromJson(Map<String, dynamic> json) => MovieDetailsDto(
-    title: json["Title"] ?? "",
-    year: json["Year"] ?? "",
-    rated: json["Rated"] ?? "",
-    released: json["Released"] ?? "",
-    runtime: json["Runtime"] ?? "",
-    genre: json["Genre"] ?? "",
-    director: json["Director"] ?? "",
-    writer: json["Writer"] ?? "",
-    actors: json["Actors"] ?? "",
-    plot: json["Plot"] ?? "",
-    language: json["Language"] ?? "",
-    country: json["Country"] ?? "",
-    awards: json["Awards"] ?? "",
-    poster: json["Poster"] ?? "",
-    ratings: List<RatingDto>.from(json["Ratings"].map((x) => RatingDto.fromJson(x)) ?? []),
-    metascore: json["Metascore"] ?? "",
-    imdbRating: json["imdbRating"] ?? "",
-    imdbVotes: json["imdbVotes"] ?? "",
-    imdbId: json["imdbID"] ?? "",
-    type: json["Type"] ?? "",
-    dvd: json["DVD"] ?? "",
-    boxOffice: json["BoxOffice"] ?? "",
-    production: json["Production"] ?? "",
-    website: json["Website"] ?? "",
-    response: json["Response"] ?? "",
-  );
+  factory MovieDetailsDto.fromJson(Map<String, dynamic> json) =>
+      MovieDetailsDto(
+        title: json["Title"] ?? "",
+        year: json["Year"] ?? "",
+        rated: json["Rated"] ?? "",
+        released: json["Released"] ?? "",
+        runtime: json["Runtime"] ?? "",
+        genre: json["Genre"] ?? "",
+        director: json["Director"] ?? "",
+        writer: json["Writer"] ?? "",
+        actors: json["Actors"] ?? "",
+        plot: json["Plot"] ?? "",
+        language: json["Language"] ?? "",
+        country: json["Country"] ?? "",
+        awards: json["Awards"] ?? "",
+        poster: json["Poster"] ?? "",
+        ratings: List<RatingDto>.from(
+            json["Ratings"].map((x) => RatingDto.fromJson(x)) ?? []),
+        metascore: json["Metascore"] ?? "",
+        imdbRating: json["imdbRating"] ?? "",
+        imdbVotes: json["imdbVotes"] ?? "",
+        imdbId: json["imdbID"] ?? "",
+        type: json["Type"] ?? "",
+        dvd: json["DVD"] ?? "",
+        boxOffice: json["BoxOffice"] ?? "",
+        production: json["Production"] ?? "",
+        website: json["Website"] ?? "",
+        response: json["Response"] ?? "",
+      );
 
   Map<String, dynamic> toJson() => {
-    "Title": title,
-    "Year": year,
-    "Rated": rated,
-    "Released": released,
-    "Runtime": runtime,
-    "Genre": genre,
-    "Director": director,
-    "Writer": writer,
-    "Actors": actors,
-    "Plot": plot,
-    "Language": language,
-    "Country": country,
-    "Awards": awards,
-    "Poster": poster,
-    "Ratings": List<dynamic>.from(ratings.map((x) => x.toJson())),
-    "Metascore": metascore,
-    "imdbRating": imdbRating,
-    "imdbVotes": imdbVotes,
-    "imdbID": imdbId,
-    "Type": type,
-    "DVD": dvd,
-    "BoxOffice": boxOffice,
-    "Production": production,
-    "Website": website,
-    "Response": response,
-  };
+        "Title": title,
+        "Year": year,
+        "Rated": rated,
+        "Released": released,
+        "Runtime": runtime,
+        "Genre": genre,
+        "Director": director,
+        "Writer": writer,
+        "Actors": actors,
+        "Plot": plot,
+        "Language": language,
+        "Country": country,
+        "Awards": awards,
+        "Poster": poster,
+        "Ratings": List<dynamic>.from(ratings.map((x) => x.toJson())),
+        "Metascore": metascore,
+        "imdbRating": imdbRating,
+        "imdbVotes": imdbVotes,
+        "imdbID": imdbId,
+        "Type": type,
+        "DVD": dvd,
+        "BoxOffice": boxOffice,
+        "Production": production,
+        "Website": website,
+        "Response": response,
+      };
+
+  factory MovieDetailsDto.empty() => MovieDetailsDto(
+        title: "",
+        year: "",
+        rated: "",
+        released: "",
+        runtime: "",
+        genre: "",
+        director: "",
+        writer: "",
+        actors: "",
+        plot: "",
+        language: "",
+        country: "",
+        awards: "",
+        poster: "",
+        ratings: [],
+        metascore: "",
+        imdbRating: "",
+        imdbVotes: "",
+        imdbId: "",
+        type: "",
+        dvd: "",
+        boxOffice: "",
+        production: "",
+        website: "",
+        response: "",
+      );
 }
 
 class RatingDto {
@@ -125,17 +156,18 @@ class RatingDto {
   final String source;
   final String value;
 
-  factory RatingDto.fromRawJson(String str) => RatingDto.fromJson(json.decode(str));
+  factory RatingDto.fromRawJson(String str) =>
+      RatingDto.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory RatingDto.fromJson(Map<String, dynamic> json) => RatingDto(
-    source: json["Source"] ?? "",
-    value: json["Value"] ?? "",
-  );
+        source: json["Source"] ?? "",
+        value: json["Value"] ?? "",
+      );
 
   Map<String, dynamic> toJson() => {
-    "Source": source,
-    "Value": value,
-  };
+        "Source": source,
+        "Value": value,
+      };
 }

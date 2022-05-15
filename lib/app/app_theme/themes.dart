@@ -69,5 +69,4 @@ class Themes {
     onSurface: _lightFillColor,
     brightness: Brightness.light,
   );
-
 }

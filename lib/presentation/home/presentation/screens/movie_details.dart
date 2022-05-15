@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movies_app/app/localization/resources.dart';
 import 'package:movies_app/presentation/home/domain/models/movie_details_model.dart';
+import 'package:movies_app/presentation/home/presentation/manager/home_bloc.dart';
 
 class MovieDetails extends StatelessWidget {
   final MovieDetailsModel movie;
@@ -9,28 +12,40 @@ class MovieDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool rtl = (Directionality.of(context) == TextDirection.rtl);
-    return Scaffold(
-      body: Stack(
-        children: [
-          _BackgroundImage(url: movie.poster),
-          _DetailsBody(movie: movie),
-          Align(
-            alignment: rtl ? Alignment.topRight: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 5),
-              child: FloatingActionButton(
-                backgroundColor:
-                    Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
-                onPressed: () => Navigator.of(context).pop(),
-                mini: true,
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
+    return WillPopScope(
+      onWillPop: () async {
+        BlocProvider.of<HomeBloc>(context).add(SearchMoviesEvent());
+        return true;
+      },
+      child: Scaffold(
+        body: Stack(
+          children: [
+            _BackgroundImage(url: movie.poster),
+            _DetailsBody(movie: movie),
+            Align(
+              alignment: rtl ? Alignment.topRight : Alignment.topLeft,
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 28, horizontal: 5),
+                child: FloatingActionButton(
+                  backgroundColor: Theme.of(context)
+                      .colorScheme
+                      .onBackground
+                      .withOpacity(0.2),
+                  onPressed: () {
+                    BlocProvider.of<HomeBloc>(context).add(SearchMoviesEvent());
+                    Navigator.of(context).pop();
+                  },
+                  mini: true,
+                  child: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -50,6 +65,7 @@ class _BackgroundImage extends StatefulWidget {
 
 class _BackgroundImageState extends State<_BackgroundImage> {
   bool loaded = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -58,11 +74,15 @@ class _BackgroundImageState extends State<_BackgroundImage> {
         image: DecorationImage(
           fit: BoxFit.cover,
           colorFilter: ColorFilter.mode(
-            Colors.black.withOpacity(0.5),
-            BlendMode.colorBurn,
+            Colors.black.withOpacity(0.4),
+            BlendMode.darken,
           ),
-          image: loaded ? NetworkImage(widget.url) : Image.asset("assets/images/logo.png").image,
-          onError: (_, __) => setState(() {loaded = false;}),
+          image: loaded
+              ? NetworkImage(widget.url)
+              : Image.asset("assets/images/logo.png").image,
+          onError: (_, __) => setState(() {
+            loaded = false;
+          }),
         ),
       ),
       child: const SizedBox(
@@ -126,9 +146,9 @@ class _DetailsBody extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Text(
-                  "Plot",
-                  style: TextStyle(
+                Text(
+                  Resources.of(context).getResource("presentation.home.plot"),
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
@@ -137,12 +157,21 @@ class _DetailsBody extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Text(movie.plot),
                 ),
-                _TextRow(title: "Genre: ", value: movie.genre),
+                _TextRow(
+                    title: Resources.of(context)
+                        .getResource("presentation.home.genre"),
+                    value: movie.genre),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: _TextRow(title: "writer: ", value: movie.writer),
+                  child: _TextRow(
+                      title: Resources.of(context)
+                          .getResource("presentation.home.writer"),
+                      value: movie.writer),
                 ),
-                _TextRow(title: "actors: ", value: movie.actors),
+                _TextRow(
+                    title: Resources.of(context)
+                        .getResource("presentation.home.actor"),
+                    value: movie.actors),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   child: _InfoWithIcons(
@@ -194,13 +223,11 @@ class _StarRating extends StatelessWidget {
   final int max;
   final double size = 28;
   final double rating;
-  final Function(double)? onRatingChanged;
 
   const _StarRating({
     Key? key,
     required this.max,
     required this.rating,
-    this.onRatingChanged,
   }) : super(key: key);
 
   Widget buildStar(int index) {
@@ -224,7 +251,6 @@ class _StarRating extends StatelessWidget {
       );
     }
     return InkResponse(
-      onTap: onRatingChanged == null ? null : () => onRatingChanged!(index + 1),
       child: icon,
     );
   }
@@ -238,8 +264,11 @@ class _StarRating extends StatelessWidget {
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(5, (index) => buildStar(index))),
-        Text(" $rating out of $max",
-            textDirection: TextDirection.ltr,
+        Text(
+            " $rating ${Resources.of(context).getResource("presentation.home.outOf")} $max",
+            textDirection: Directionality.of(context) == TextDirection.ltr
+                ? TextDirection.ltr
+                : TextDirection.rtl,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: size - 10)),
       ],
     );
@@ -292,13 +321,23 @@ class _InfoWithIcons extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Divider(),
-        buildIcon("Runtime", runtime, Icons.timer_outlined),
+        buildIcon(
+            Resources.of(context).getResource("presentation.home.runtime"),
+            runtime,
+            Icons.timer_outlined),
         const Divider(),
-        buildIcon("Rated", rated, Icons.accessibility),
+        buildIcon(Resources.of(context).getResource("presentation.home.rated"),
+            rated, Icons.accessibility),
         const Divider(),
-        buildIcon("Released", released, Icons.date_range),
+        buildIcon(
+            Resources.of(context).getResource("presentation.home.released"),
+            released,
+            Icons.date_range),
         const Divider(),
-        buildIcon("Language", language, Icons.language),
+        buildIcon(
+            Resources.of(context).getResource("presentation.home.language"),
+            language,
+            Icons.language),
       ],
     );
   }

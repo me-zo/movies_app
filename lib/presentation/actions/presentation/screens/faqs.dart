@@ -1,7 +1,7 @@
-import '../../../../app/localization/resources.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../app/localization/resources.dart';
 import '../manager/actions_cubit.dart';
 import '../manager/functions_actions.dart';
 
@@ -67,13 +67,22 @@ class _FaqsState extends State<Faqs> {
                             (index) => ExpansionPanel(
                               headerBuilder: (context, expanded) => Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text( Resources.of(context).getResource(state.info.questions[index].title),
-                                style: BlocProvider.of<ActionsCubit>(context)
-                                    .faqsIsExpanded[index] ? TextStyle(color: Theme.of(context).colorScheme.secondary) : null,),
+                                child: Text(
+                                  Resources.of(context).getResource(
+                                      state.info.questions[index].title),
+                                  style: BlocProvider.of<ActionsCubit>(context)
+                                          .faqsIsExpanded[index]
+                                      ? TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary)
+                                      : null,
+                                ),
                               ),
                               body: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(Resources.of(context).getResource(state.info.questions[index].answer)),
+                                child: Text(Resources.of(context).getResource(
+                                    state.info.questions[index].answer)),
                               ),
                               isExpanded: BlocProvider.of<ActionsCubit>(context)
                                   .faqsIsExpanded[index],

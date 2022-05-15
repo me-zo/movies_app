@@ -5,7 +5,7 @@ import 'package:http/http.dart';
 import 'package:movies_app/secrets/secrets.dart';
 
 import '../dependency_registrar/dependencies.dart';
-import '../failures/errors.dart';
+import '../errors/errors.dart';
 
 class HttpClient {
   final Connectivity _connectivity = sl();
@@ -15,7 +15,8 @@ class HttpClient {
     required String body,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
+      var finalUrl =
+          Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
 
       log("Posting To: $finalUrl");
       var result = await post(
@@ -34,7 +35,8 @@ class HttpClient {
     required String body,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
+      var finalUrl =
+          Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
 
       log("Putting To: $finalUrl");
 
@@ -53,7 +55,8 @@ class HttpClient {
     required String url,
   }) async {
     if (await _isConnected()) {
-      var finalUrl = Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
+      var finalUrl =
+          Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
 
       log("Getting From: $finalUrl");
       var result = await get(

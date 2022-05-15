@@ -1,5 +1,6 @@
-import '../../../app/localization/resources.dart';
 import 'package:flutter/material.dart';
+
+import '../../../app/localization/resources.dart';
 
 mixin AppSnackBar {
   static void notificationSnackBar(BuildContext context,

@@ -1,4 +1,4 @@
-part of 'home_cubit.dart';
+part of 'home_bloc.dart';
 
 @immutable
 abstract class HomeState {}
@@ -18,9 +18,9 @@ class ShowMovieList extends HomeState {
 
   ShowMovieList({required this.info});
 }
+
 class ShowMovieDetails extends HomeState {
   final MovieDetailsModel movie;
 
   ShowMovieDetails({required this.movie});
 }
-

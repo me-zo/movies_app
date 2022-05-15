@@ -11,7 +11,7 @@ import 'errors.dart';
 class ErrorHandler {
   static Future<Either<Failure, T>> handleFuture<T>(
     Future<Either<Failure, T>> Function() func,
-      ) async {
+  ) async {
     try {
       return await func.call();
     } on Exception catch (e) {

@@ -1,4 +1,3 @@
-
 class NoInternetException implements Exception {
   final String message;
 
@@ -44,11 +43,19 @@ class NotFoundException implements Exception {
 
   @override
   String toString() => "$runtimeType Message: $message";
+}
 
+enum FailureActions {
+  display,
+  workAround,
 }
 
 class Failure {
   final String message;
+  final FailureActions failureAction;
 
-  Failure({required this.message});
+  Failure({
+    this.failureAction = FailureActions.display,
+    required this.message,
+  });
 }

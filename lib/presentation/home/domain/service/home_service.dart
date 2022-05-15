@@ -6,5 +6,6 @@ import '../models/movie_model.dart';
 
 abstract class HomeService {
   Future<Either<Failure, List<MovieModel>>> searchMovies(String value);
+
   Future<Either<Failure, MovieDetailsModel>> movieDetails(String id);
 }

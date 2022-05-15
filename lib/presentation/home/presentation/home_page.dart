@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies_app/app/localization/resources.dart';
+import 'package:movies_app/presentation/home/presentation/manager/home_bloc.dart';
 import 'package:movies_app/presentation/home/presentation/screens/movie_details.dart';
 
 import '../../actions/presentation/actions_page.dart';
-import '../../home/presentation/manager/home_cubit.dart';
 import '../../home/presentation/screens/movie_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +19,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    BlocProvider.of<HomeCubit>(context).searchMovies(value: "batman");
+    BlocProvider.of<HomeBloc>(context)
+        .add(SearchMoviesEvent(keyword: "batman"));
     super.initState();
   }
 
@@ -41,7 +42,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: BlocConsumer<HomeCubit, HomeState>(
+      body: BlocConsumer<HomeBloc, HomeState>(
         listener: (context, state) {
           if (state is ShowMovieDetails) {
             Navigator.of(context).push(
@@ -73,8 +74,8 @@ class _HomePageState extends State<HomePage> {
                     controller: _controller,
                     onSubmitted: (value) {
                       if (value.isNotEmpty) {
-                        BlocProvider.of<HomeCubit>(context)
-                            .searchMovies(value: value);
+                        BlocProvider.of<HomeBloc>(context)
+                            .add(SearchMoviesEvent(keyword: value));
                         _controller.clear();
                       }
                     },

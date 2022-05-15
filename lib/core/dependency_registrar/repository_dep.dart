@@ -5,5 +5,4 @@ import '../../data/repositories/movies/movies_repository_impl.dart';
 
 void repositoryDependencies(GetIt locator) {
   locator.registerFactory<MoviesRepository>(() => MoviesRepositoryImpl());
-
 }

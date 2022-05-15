@@ -1,16 +1,23 @@
 {
-  "core.fixtures.languageCodes.ar" : "العربية",
-  "core.fixtures.languageCodes.en" : "English",
-  "core.fixtures.ThemeCodes.light" : "Light Theme",
-  "core.fixtures.ThemeCodes.dark" : "Dark Theme",
-  "core.fixtures.unknownError" : "An unknown error happened",
-  "core.network.NoInternetConnection" : "No Internet Connection",
-  "core.failures.unknownError" : "Unknown Error",
-
-  "presentation.actions.appLanguage" : "Application Language:",
-  "presentation.actions.appTheme" : "Themes:",
-  "presentation.actions.settingsHeader" : "Settings",
-
-  "presentation.home.moviesHeader" : "Movies",
-  "presentation.home.moviesSearch" : "Search for a movie"
+  "core.fixtures.languageCodes.ar": "العربية",
+  "core.fixtures.languageCodes.en": "English",
+  "core.fixtures.ThemeCodes.light": "Light Theme",
+  "core.fixtures.ThemeCodes.dark": "Dark Theme",
+  "core.fixtures.unknownError": "An unknown error happened",
+  "core.network.NoInternetConnection": "No Internet Connection",
+  "core.failures.unknownError": "Unknown Error",
+  "presentation.actions.appLanguage": "Application Language:",
+  "presentation.actions.appTheme": "Themes:",
+  "presentation.actions.settingsHeader": "Settings",
+  "presentation.home.genre": "Genre: ",
+  "presentation.home.writer": "writer: ",
+  "presentation.home.actor": "actors: ",
+  "presentation.home.outOf": "out of",
+  "presentation.home.runtime": "Runtime",
+  "presentation.home.rated": "Rated",
+  "presentation.home.released": "Released",
+  "presentation.home.language": "Language",
+  "presentation.home.plot": "Plot",
+  "presentation.home.moviesHeader": "Movies",
+  "presentation.home.moviesSearch": "Search for a movie"
 }

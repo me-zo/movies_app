@@ -1,7 +1,7 @@
-import '../../../presentation/actions/presentation/screens/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../presentation/actions/presentation/screens/settings.dart';
 import 'manager/actions_cubit.dart';
 import 'manager/functions_actions.dart';
 import 'screens/faqs.dart';

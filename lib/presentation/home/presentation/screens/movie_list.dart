@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../manager/home_cubit.dart';
+import 'package:movies_app/presentation/home/presentation/manager/home_bloc.dart';
 
 class MovieList extends StatefulWidget {
   const MovieList({Key? key}) : super(key: key);
@@ -11,39 +10,32 @@ class MovieList extends StatefulWidget {
 }
 
 class _MovieListState extends State<MovieList> {
-  late List<bool> loaded;
-  @override
-  void initState() {
-    var state = BlocProvider.of<HomeCubit>(context).state;
-   if ( state is ShowMovieList) {
-        loaded = List.generate(state.info.length, (index) => true);
-      } else {
-     loaded = [];
-   }
-    super.initState();
-  }
-  
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeCubit, HomeState>(
+    return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is ShowMovieList) {
           return ListView.builder(
             itemCount: state.info.length,
             itemBuilder: (context, index) {
               return ListTile(
-                onTap: () =>
-                    BlocProvider.of<HomeCubit>(context).getMovieDetails(
-                  id: state.info[index].imdbID,
+                onTap: () => BlocProvider.of<HomeBloc>(context).add(
+                  MovieDetailsEvent(id: state.info[index].imdbID),
                 ),
                 contentPadding: const EdgeInsets.all(10),
                 leading: Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: loaded[index] ? NetworkImage(state.info[index].moviePoster) : Image.asset("assets/images/logo.png").image,
+                        image: BlocProvider.of<HomeBloc>(context)
+                                .isProfileLoaded[index]
+                            ? NetworkImage(state.info[index].moviePoster)
+                            : Image.asset("assets/images/logo.png").image,
                         onError: (_, __) {
-                          setState(() {loaded[index] = false;});
+                          setState(() {
+                            BlocProvider.of<HomeBloc>(context)
+                                .isProfileLoaded[index] = false;
+                          });
                         },
                       ),
                       borderRadius: BorderRadius.circular(6)),

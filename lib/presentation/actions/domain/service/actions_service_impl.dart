@@ -1,14 +1,13 @@
 import 'package:dartz/dartz.dart';
+
+import '../../../../core/exports.dart';
 import '../../../../data/shared_preferences/settings_notifier.dart';
 import '../../../../presentation/actions/domain/models/faqs_list_model.dart';
 import '../../../../presentation/actions/domain/models/settings_model.dart';
-
-import '../../../../core/exports.dart';
 import 'actions_service.dart';
 
 class ActionsServiceImpl implements ActionsService {
   final SettingsNotifier _settingsNotifier = sl();
-
 
   @override
   Either<Failure, SettingsModel> loadSettings() =>

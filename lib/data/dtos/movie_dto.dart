@@ -14,6 +14,9 @@ class MovieListDto {
   factory MovieListDto.fromRawJson(String str) =>
       MovieListDto.fromJson(json.decode(str));
 
+  factory MovieListDto.empty() =>
+      MovieListDto(error: "", movies: [], response: "");
+
   String toRawJson() => json.encode(toJson());
 
   factory MovieListDto.fromJson(Map<String, dynamic> json) => MovieListDto(

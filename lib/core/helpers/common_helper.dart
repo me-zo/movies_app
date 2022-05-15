@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+
 mixin CommonHelper {
   /// checks if [text] is a valid email  address
   ///

@@ -1,16 +1,23 @@
 {
-  "core.fixtures.languageCodes.ar" : "العربية",
-  "core.fixtures.languageCodes.en" : "English",
-  "core.fixtures.ThemeCodes.light" : "نمط نهاري",
-  "core.fixtures.ThemeCodes.dark" : "نمط مظلم",
-  "core.fixtures.unknownError" : "لقد حدث خطأ ما",
-  "core.network.NoInternetConnection" : "لا يوجد اتصال بالانترنت",
-
-  "presentation.actions.appLanguage" : "لغة التطبيق:",
-  "presentation.actions.appTheme" : "النمط:",
-  "presentation.actions.settingsHeader" : "الإعدادات",
-  "presentation.actions.faqsHeader" : "الأسئلة الشائعة",
-
-  "presentation.home.moviesHeader" : "الافلام",
-  "presentation.home.moviesSearch" : "ابحث عن فلم"
+  "core.fixtures.languageCodes.ar": "العربية",
+  "core.fixtures.languageCodes.en": "English",
+  "core.fixtures.ThemeCodes.light": "نمط نهاري",
+  "core.fixtures.ThemeCodes.dark": "نمط مظلم",
+  "core.fixtures.unknownError": "لقد حدث خطأ ما",
+  "core.network.NoInternetConnection": "لا يوجد اتصال بالانترنت",
+  "presentation.actions.appLanguage": "لغة التطبيق:",
+  "presentation.actions.appTheme": "النمط:",
+  "presentation.actions.settingsHeader": "الإعدادات",
+  "presentation.actions.faqsHeader": "الأسئلة الشائعة",
+  "presentation.home.genre": "الفئة: ",
+  "presentation.home.writer": "الكاتب: ",
+  "presentation.home.actor": "الممثلين: ",
+  "presentation.home.outOf": "من",
+  "presentation.home.runtime": "وقت المشاهدة",
+  "presentation.home.rated": "التقييم",
+  "presentation.home.released": "تاريخ الاصدار",
+  "presentation.home.language": "اللغة",
+  "presentation.home.plot": "الحبكة",
+  "presentation.home.moviesHeader": "الافلام",
+  "presentation.home.moviesSearch": "ابحث عن فلم"
 }
