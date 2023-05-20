@@ -1,14 +1,15 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
-import 'package:movies_app/core/fixtures/app_keys.dart';
+import 'package:movies_app/app/configuration.dart';
 
+import '../dependency_registrar/dependencies.dart';
+import '../utils/logger.dart';
 import 'errors.dart';
 
 class ErrorHandler {
+  /// handles all exceptions that may happen when making a request
   static Future<Either<Failure, T>> handleFuture<T>(
     Future<Either<Failure, T>> Function() func,
   ) async {
@@ -16,27 +17,21 @@ class ErrorHandler {
       return await func.call();
     } on Exception catch (e) {
       return Left(_mapExceptionToFailure(e));
-    } catch (e) {
-      log(e.toString());
+    } on Failure catch (f) {
+      Log.e(f.toString());
+      return Left(f);
+    } on Error catch (e) {
+      Log.e(e);
       return Left(
         Failure(
-          message: AppKeys.error,
+          message: e.toString(),
         ),
       );
-    }
-  }
-
-  static Either<Failure, T> handle<T>(
-    Either<Failure, T> Function() func,
-  ) {
-    try {
-      return func.call();
-    } on Exception catch (e) {
-      return Left(_mapExceptionToFailure(e));
     } catch (e) {
+      Log.e(e);
       return Left(
         Failure(
-          message: AppKeys.error,
+          message: e.toString(),
         ),
       );
     }
@@ -44,71 +39,63 @@ class ErrorHandler {
 
   /// Checks for specific codes that require special attention
   /// Then handles the rest based on the HTTP Code level
-  static Exception httpResponseException(Response response) {
-    final Map<String, dynamic> json = jsonDecode(response.body);
-    log(json.toString());
+  static Exception httpResponseException(
+    Response response, {
+    bool handleClientErrors = true,
+    bool handleServerErrors = true,
+  }) {
     switch (response.statusCode) {
       case HttpStatus.forbidden:
-        return UnauthorizedException(message: json['message'] ?? "");
+        return UnauthorizedException(message: response.body);
       case HttpStatus.notFound:
-        return NotFoundException(message: json['message'] ?? "");
+        return NotFoundException(message: response.body);
       default:
-        if (response.statusCode >= 400 && response.statusCode < 500) {
+        if (handleClientErrors &&
+            response.statusCode >= 400 &&
+            response.statusCode < 500) {
           return ClientErrorException(
             statusCode: response.statusCode,
-            body: json['message'] ?? response.body,
+            body: response.body,
           );
-        } else if (response.statusCode >= 500) {
+        } else if (handleServerErrors && response.statusCode >= 500) {
           return ServerErrorException(
             statusCode: response.statusCode,
-            body: json['message'] ?? response.body,
+            body: response.body,
           );
         } else {
-          return Exception("UnhandledException Code: ${response.statusCode}"
-              " body: ${json['message'] ?? response.body}");
+          return Exception(
+              "UnhandledNetworkException \n\tCode: ${response.statusCode} \n\tbody: ${response.body}");
         }
     }
   }
 
   /// maps possible exceptions to be shown in the form of a failure message
   static Failure _mapExceptionToFailure(Exception exception) {
-    log(exception.toString());
+    Log.e(exception);
     switch (exception.runtimeType) {
       case NoInternetException:
         exception as NoInternetException;
-        return Failure(
-          message: exception.message,
-        );
+        return Failure(message: exception.message);
       case UnauthorizedException:
         exception as UnauthorizedException;
-        return Failure(
-          message: exception.message,
-        );
+        return Failure(message: exception.message);
       case NotFoundException:
         exception as NotFoundException;
-        return Failure(
-          message: exception.message,
-        );
+        return Failure(message: exception.message);
       case ServerErrorException:
         exception as ServerErrorException;
-        return Failure(
-          message: exception.body,
-        );
+        return Failure(message: exception.body);
       case ClientErrorException:
         exception as ClientErrorException;
-        return Failure(
-          message: exception.body,
-        );
+        return Failure(message: exception.body);
       case FormatException:
         exception as FormatException;
-        return Failure(
-          message: exception.message,
-        );
-
+        return Failure(message: exception.message);
+      case ClientException:
+        exception as ClientException;
+        return Failure(message: exception.message);
       default:
-        return Failure(
-          message: AppKeys.error,
-        );
+        return Failure(message: getIt<Configuration>().defaultErrorMessage);
     }
   }
 }

@@ -1,34 +1,52 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
-import 'package:movies_app/core/dependency_registrar/cache_dep.dart';
+import 'package:movies_app/app/configuration.dart';
+import 'package:movies_app/models/movie_details_model.dart';
+import 'package:movies_app/models/movie_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../core/dependency_registrar/feature_dependencies/actions_dep.dart';
-import '../../core/dependency_registrar/feature_dependencies/home_dep.dart';
-import '../../data/shared_preferences/settings_notifier.dart';
-import '../network/http_client.dart';
-import 'repository_dep.dart';
+import 'package:movies_app/core/cache/cache_manager.dart';
 
-final sl = GetIt.instance;
+import '../../presentation/settings_view_model.dart';
 
-class Dependencies {
-  static Future<void> init() async {
-    //#region Common Dependencies
+final getIt = GetIt.instance;
 
-    sl.registerLazySingleton<Connectivity>(() => Connectivity());
+Future<void> initDependencies(Build build) async {
+  getIt.registerLazySingleton<Connectivity>(() => Connectivity());
 
-    var sharedPreferences = await SharedPreferences.getInstance();
+  var sharedPreferences = await SharedPreferences.getInstance();
 
-    sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 
-    sl.registerLazySingleton<SettingsNotifier>(() => SettingsNotifier());
+  getIt.registerLazySingleton<SettingsNotifier>(() => SettingsNotifier());
 
-    sl.registerFactory<HttpClient>(() => HttpClient());
+  cacheDependencies(getIt);
 
-    //#endregion
-    cacheDependencies(sl);
-    repositoryDependencies(sl);
-    homeDependencies(sl);
-    actionDependencies(sl);
+  switch (build) {
+    case Build.DEVELOP:
+      getIt.registerSingleton<Configuration>(
+        Configuration(
+          domain: "www.omdbapi.com",
+          variant: build,
+          defaultErrorMessage: "core.fixtures.unknownError",
+        ),
+      );
+      break;
+    case Build.RELEASE:
+      getIt.registerSingleton<Configuration>(
+        Configuration(
+          domain: "www.omdbapi.com",
+          variant: build,
+          defaultErrorMessage: "core.fixtures.unknownError",
+        ),
+      );
+      break;
   }
+}
+
+void cacheDependencies(GetIt locator) {
+  locator.registerLazySingleton<CacheManager<MovieDetailsModel>>(
+      () => CacheManager<MovieDetailsModel>());
+  locator.registerLazySingleton<CacheManager<MovieListModel>>(
+      () => CacheManager<MovieListModel>());
 }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:movies_app/presentation/home/presentation/manager/home_bloc.dart';
+import 'package:movies_app/presentation/actions/actions_view_model.dart';
+import 'package:movies_app/presentation/home/home_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
-import '../../data/shared_preferences/settings_notifier.dart';
-import '../../presentation/actions/presentation/manager/actions_cubit.dart';
+import '../presentation/home/screens/splash.dart';
+import '../presentation/settings_view_model.dart';
 import '../app/localization/resources.dart';
-import '../core/exports.dart';
-import '../presentation/home/presentation/screens/splash.dart';
+import '../core/dependency_registrar/dependencies.dart';
 import '../presentation/route_generator.dart';
 
 /// The Widget that configures your application.
@@ -26,16 +25,16 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SettingsNotifier>(
-      create: (_) => sl<SettingsNotifier>(),
+      create: (_) => getIt<SettingsNotifier>(),
       child: Consumer<SettingsNotifier>(
         builder: (context, settings, child) {
-          return MultiBlocProvider(
+          return MultiProvider(
             providers: [
-              BlocProvider<HomeBloc>(
-                create: (context) => sl<HomeBloc>(),
+              ChangeNotifierProvider<HomeViewModel>(
+                create: (context) => HomeViewModel(),
               ),
-              BlocProvider<ActionsCubit>(
-                create: (context) => sl<ActionsCubit>(),
+              ChangeNotifierProvider<ActionsViewModel>(
+                create: (context) => ActionsViewModel(),
               ),
             ],
             child: MaterialApp(

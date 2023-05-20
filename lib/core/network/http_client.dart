@@ -1,90 +1,87 @@
-import 'dart:developer';
+import 'dart:convert';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:movies_app/secrets/secrets.dart';
 
-import '../dependency_registrar/dependencies.dart';
 import '../errors/errors.dart';
+import '../utils/logger.dart';
+import 'http_config.dart';
 
 class HttpClient {
-  final Connectivity _connectivity = sl();
+  final HttpConfig config;
 
-  Future<Response> postData({
+  HttpClient({required this.config});
+
+  Future<http.Response> post({
+    required String url,
+    required String body,
+    Map<String, String>? query,
+  }) async {
+    if (await config.isConnected()) {
+      var finalUrl =
+          Uri.parse("${config.getBaseUrl()}/?&apikey=${Secrets.apiKey}$url")
+              .replace(queryParameters: query);
+      var headers = config.getHeaders();
+      Log.d("Posting To: $finalUrl"
+          "\nRequest headers: ${const JsonEncoder.withIndent("    ").convert(headers)}");
+      http.Response result = await http.post(
+        finalUrl,
+        headers: config.getHeaders(),
+        body: body,
+      );
+      Log.d("Response code: ${result.statusCode}"
+          "\nResponse headers: ${result.headers}"
+          "\nResponse body: ${result.body}");
+      return result;
+    } else {
+      throw NoInternetException("core.network.NoInternetConnection");
+    }
+  }
+
+  Future<http.Response> get(
+      {required String url, Map<String, String>? query}) async {
+    if (await config.isConnected()) {
+      var finalUrl =
+          Uri.parse("${config.getBaseUrl()}/?&apikey=${Secrets.apiKey}$url")
+              .replace(queryParameters: query);
+      var headers = config.getHeaders();
+      Log.d("Getting From: $finalUrl"
+          "\nRequest headers: ${const JsonEncoder.withIndent("    ").convert(headers)}");
+      var result = await http.get(
+        finalUrl,
+        headers: headers,
+      );
+      Log.d("Response code: ${result.statusCode}"
+          "\nResponse body: ${result.body}");
+      return result;
+    } else {
+      throw NoInternetException("core.network.NoInternetConnection");
+    }
+  }
+
+  Future<http.Response> put({
     required String url,
     required String body,
   }) async {
-    if (await _isConnected()) {
+    if (await config.isConnected()) {
       var finalUrl =
-          Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
-
-      log("Posting To: $finalUrl");
-      var result = await post(
+          Uri.parse("${config.getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
+      var headers = config.getHeaders();
+      Log.d("Putting To: $finalUrl"
+          "\nRequest headers: ${const JsonEncoder.withIndent("    ").convert(headers)}"
+          "\nRequest body: $body");
+      var result = await http.put(
         finalUrl,
-        headers: _getHeaders(),
+        headers: headers,
         body: body,
       );
+
+      Log.d("Response code: ${result.statusCode}"
+          "\nResponse headers: ${result.headers}"
+          "\nResponse body: ${result.body}");
       return result;
     } else {
       throw NoInternetException("core.network.NoInternetConnection");
     }
-  }
-
-  Future<Response> putData({
-    required String url,
-    required String body,
-  }) async {
-    if (await _isConnected()) {
-      var finalUrl =
-          Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
-
-      log("Putting To: $finalUrl");
-
-      var result = await put(
-        finalUrl,
-        headers: _getHeaders(),
-        body: body,
-      );
-      return result;
-    } else {
-      throw NoInternetException("core.network.NoInternetConnection");
-    }
-  }
-
-  Future<Response> getData({
-    required String url,
-  }) async {
-    if (await _isConnected()) {
-      var finalUrl =
-          Uri.parse("${getBaseUrl()}/?&apikey=${Secrets.apiKey}$url");
-
-      log("Getting From: $finalUrl");
-      var result = await get(
-        finalUrl,
-        headers: _getHeaders(),
-      );
-
-      return result;
-    } else {
-      throw NoInternetException("core.network.NoInternetConnection");
-    }
-  }
-
-  static String getBaseUrl() {
-    return "http://www.omdbapi.com";
-  }
-
-  static Map<String, String> _getHeaders() {
-    var headers = {'Content-Type': 'application/json-patch+json'};
-    // headers.addAll({
-    // "apikey" : Secrets.apiKey
-    // });
-    return headers;
-  }
-
-  Future<bool> _isConnected() async {
-    var connectivityResult = await _connectivity.checkConnectivity();
-    return connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi;
   }
 }
