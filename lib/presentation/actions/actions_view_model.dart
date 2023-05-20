@@ -1,17 +1,18 @@
+import 'package:movies_app/core/fixtures/theme_codes.dart';
 import 'package:movies_app/models/faqs_list_model.dart';
 import 'package:movies_app/presentation/base_view_model.dart';
 
-import '../../core/dependency_registrar/dependencies.dart';
+import '../../core/fixtures/language_codes.dart';
 import '../../models/settings_model.dart';
 import 'actions_repo.dart';
 
 class ActionsViewModel extends BaseViewModel {
-  final ActionsRepo _actionsRepo = getIt();
+  final ActionsRepo _actionsRepo = ActionsRepo();
 
   SettingsModel settingsModel = SettingsModel.empty();
   FaqsListModel faqsList = FaqsListModel.empty();
-  String selectedLanguage = "";
-  String selectedTheme = "";
+  String selectedLanguage = LanguageCodes.english;
+  String selectedTheme = ThemeCodes.dark;
   late List<bool> faqsIsExpanded;
 
   void prepareSettings() {

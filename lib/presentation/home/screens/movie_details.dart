@@ -11,8 +11,73 @@ class MovieDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool rtl = (Directionality.of(context) == TextDirection.rtl);
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 70,
+        automaticallyImplyLeading: false,
+        leading: InkWell(
+          onTap: () => Navigator.of(context).pop(),
+          borderRadius: BorderRadius.circular(100),
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 12),
+            padding: const EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              color:
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        actions: [
+          DropdownButton<String>(
+            underline: const SizedBox(),
+            icon: Container(
+              margin: const EdgeInsets.all(12),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
+              decoration: BoxDecoration(
+                color:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: const Icon(
+                Icons.more_vert,
+                color: Colors.white,
+              ),
+            ),
+            onChanged: (String? val) {
+              if (val == "preview") {
+                showDialog(
+                  context: context,
+                  barrierDismissible: true,
+                  builder: (context) => Dialog(
+                    child: Image.network(
+                      Provider.of<HomeViewModel>(context, listen: false)
+                          .movieDetails
+                          .poster,
+                    ),
+                  ),
+                );
+              }
+            },
+            dropdownColor:
+                Theme.of(context).colorScheme.background.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(20),
+            items: const [
+              DropdownMenuItem(
+                child: Text("Preview Poster"),
+                value: "preview",
+              )
+            ],
+          ),
+        ],
+      ),
       body: Consumer<HomeViewModel>(builder: (context, model, _) {
         return model.isBusy
             ? const Center(child: CircularProgressIndicator())
@@ -31,27 +96,6 @@ class MovieDetails extends StatelessWidget {
                       duration: 0.5.seconds,
                     ),
                   ], child: _DetailsBody(movie: model.movieDetails)),
-                  Align(
-                    alignment: rtl ? Alignment.topRight : Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 28, horizontal: 5),
-                      child: FloatingActionButton(
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .onBackground
-                            .withOpacity(0.2),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        mini: true,
-                        child: const Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               );
       }),
@@ -108,62 +152,67 @@ class _DetailsBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height * 0.25),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Text(
-              movie.title,
-              style: TextStyle(
-                fontSize: movie.title.length < 30 ? 40 : 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-              textAlign: TextAlign.center,
+    return Column(
+      children: [
+        SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+        Padding(
+          padding: const EdgeInsets.all(15),
+          child: Text(
+            movie.title,
+            maxLines: 3,
+            style: TextStyle(
+              fontSize: movie.title.length < 30 ? 35 : 25,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
+            textAlign: TextAlign.center,
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              vertical: 15,
-              horizontal: 10,
-            ),
+        ),
+        Expanded(
+          child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.background,
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(40),
               ),
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.5),
+                  spreadRadius: 0.5,
+                  blurRadius: 5,
+                  offset: const Offset(0, -2),
+                ),
+              ],
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
+              padding: const EdgeInsets.symmetric(
+                vertical: 24,
+                horizontal: 20,
+              ),
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
               children: [
                 _StarRating(
                   max: 10,
                   rating: double.tryParse(movie.imdbRating) ?? 0,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                      movie.type.toUpperCase(),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    Resources.of(context).getResource("presentation.home.plot"),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
                   ),
                 ),
-                Text(
-                  Resources.of(context).getResource("presentation.home.plot"),
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
+                Text(movie.plot),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(movie.plot),
+                  child: _TextRow(
+                      title: Resources.of(context)
+                          .getResource("presentation.home.type"),
+                      value: movie.type),
                 ),
                 _TextRow(
                     title: Resources.of(context)
@@ -191,9 +240,8 @@ class _DetailsBody extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.3),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
@@ -301,17 +349,6 @@ class _InfoWithIcons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
-            child: Text(title,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                textAlign: TextAlign.end),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Icon(icon,
-                color: Theme.of(context).colorScheme.secondary, size: 33),
-          ),
-          Expanded(
             child: Text(
               value,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -319,11 +356,17 @@ class _InfoWithIcons extends StatelessWidget {
               textDirection: TextDirection.ltr,
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Icon(icon,
+                color: Theme.of(context).colorScheme.secondary, size: 33),
+          ),
         ],
       );
     }
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         const Divider(),
